@@ -27,12 +27,12 @@ const operations = [add, subtract, multiply, divide];
 function operate(chunks, target) {
     if (chunks.length === 1) {
         if (Math.abs(chunks[0].total - target) < 0.000001) {
-            return [chunks[0].text]; // Return valid solution
+            return new Set([chunks[0].text]); // Return valid solution as a Set
         }
-        return [];
+        return new Set();
     }
 
-    let solutions = [];
+    let solutions = new Set();
 
     for (let i = 0; i < chunks.length; i++) {
         for (let j = 0; j < chunks.length; j++) {
@@ -41,7 +41,8 @@ function operate(chunks, target) {
                 for (let operation of operations) {
                     const result = operation(chunks[i], chunks[j]);
                     if (result) {
-                        solutions = solutions.concat(operate([result, ...remainingChunks], target));
+                        const subSolutions = operate([result, ...remainingChunks], target);
+                        subSolutions.forEach(solution => solutions.add(solution));
                     }
                 }
             }
@@ -62,10 +63,10 @@ document.getElementById("puzzleForm").addEventListener("submit", function (event
     const solutions = operate(numbers, 20);
 
     const resultDiv = document.getElementById("result");
-    if (solutions.length > 0) {
-        const solutionCount = solutions.length;
-        const solutionText = solutions.join('<br>');
-        resultDiv.innerHTML = `<p>Found ${solutionCount} solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
+    if (solutions.size > 0) {
+        const solutionCount = solutions.size;
+        const solutionText = Array.from(solutions).join('<br>');
+        resultDiv.innerHTML = `<p>Found ${solutionCount} unique solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
     } else {
         resultDiv.innerHTML = "No solution found";
     }
