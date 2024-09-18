@@ -31,9 +31,7 @@ function operate(chunks, target) {
         }
         return new Set();
     }
-
     let solutions = new Set();
-
     for (let i = 0; i < chunks.length; i++) {
         for (let j = 0; j < chunks.length; j++) {
             if (i !== j) {
@@ -51,22 +49,25 @@ function operate(chunks, target) {
     return solutions;
 }
 
+function solve24(numbers) {
+    const chunks = numbers.map(num => new Chunk(num));
+    return operate(chunks, 24);
+}
+
 document.getElementById("puzzleForm").addEventListener("submit", function (event) {
     event.preventDefault();
-
     const number1 = parseFloat(document.getElementById("number1").value);
     const number2 = parseFloat(document.getElementById("number2").value);
     const number3 = parseFloat(document.getElementById("number3").value);
     const number4 = parseFloat(document.getElementById("number4").value);
-
-    const numbers = [number1, number2, number3, number4].map(num => new Chunk(num));
-    const solutions = operate(numbers, 20);
-
+    const numbers = [number1, number2, number3, number4];
+    
+    const solutions = solve24(numbers);
     const resultDiv = document.getElementById("result");
     if (solutions.size > 0) {
         const solutionCount = solutions.size;
         const solutionText = Array.from(solutions).join('<br>');
-        resultDiv.innerHTML = `<p>Found ${solutionCount} unique solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
+        resultDiv.innerHTML = `<p>Found ${solutionCount} solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
     } else {
         resultDiv.innerHTML = "No solution found";
     }
