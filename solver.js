@@ -18,7 +18,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    if (b.total === 0) return null; // Avoid division by zero
+    if (b.total === 0) return null; 
     return new Chunk(a.total / b.total, `(${a.text} / ${b.text})`);
 }
 
