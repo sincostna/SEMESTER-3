@@ -27,7 +27,7 @@ const operations = [add, subtract, multiply, divide];
 function operate(chunks, target) {
     if (chunks.length === 1) {
         if (Math.abs(chunks[0].total - target) < 0.000001) {
-            return new Set([chunks[0].text]); // Return valid solution as a Set
+            return new Set([chunks[0].text]);
         }
         return new Set();
     }
