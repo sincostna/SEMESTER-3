@@ -62,12 +62,12 @@ document.getElementById("puzzleForm").addEventListener("submit", function (event
     const number4 = parseFloat(document.getElementById("number4").value);
     const numbers = [number1, number2, number3, number4];
     
-    const solutions = solve24(numbers);
+    const solutions = solve20(numbers);
     const resultDiv = document.getElementById("result");
     if (solutions.size > 0) {
         const solutionCount = solutions.size;
         const solutionText = Array.from(solutions).join('<br>');
-        resultDiv.innerHTML = `<p>Found ${solutionCount} unique solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
+        resultDiv.innerHTML = `<p>Found ${solutionCount} solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
     } else {
         resultDiv.innerHTML = "No solution found";
     }
