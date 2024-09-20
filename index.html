@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head></head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Puzzle Solver</title>
@@ -79,35 +79,113 @@
     </style>
 </head>
 <body>
-    <h1>20 Solver</h1>
-
+    <h1>20 GAME SOLVER</h1>
     <form id="puzzleForm">
-        <div class="input-group">
-            <label for="number1">Number 1:</label>
-            <input type="number" id="number1" name="number1" required>
-        </div>
-
-        <div class="input-group">
-            <label for="number2">Number 2:</label>
-            <input type="number" id="number2" name="number2" required>
-        </div>
-
-        <div class="input-group">
-            <label for="number3">Number 3:</label>
-            <input type="number" id="number3" name="number3" required>
-        </div>
-
-        <div class="input-group">
-            <label for="number4">Number 4:</label>
-            <input type="number" id="number4" name="number4" required>
-        </div>
-
-        <button type="submit">Solve</button>
+      <input type="number" id="number1" placeholder="Angka 1"><br><br>
+      <input type="number" id="number2" placeholder="Angka 2"><br><br>
+      <input type="number" id="number3" placeholder="Angka 3"><br><br>
+      <input type="number" id="number4" placeholder="Angka 4"><br><br>
+      <button type="submit">Cari Solusi</button>
     </form>
-
-    <h2>Result:</h2>
+  
+    <h2>Hasil:</h2>
     <div id="result"></div>
-
-    <script src="solver.js"></script>
-</body>
-</html>
+  
+    <script>
+      // Class Chunk untuk menyimpan angka dan representasi teksnya
+      class Chunk {
+        constructor(number, text = null) {
+          this.total = number;
+          this.text = text === null ? number.toString() : text;
+        }
+      }
+  
+      // Operasi penjumlahan, perkalian, pengurangan, dan pembagian
+      function add(a, b) {
+        // Mengurutkan teks agar tidak ada duplikasi
+        const sortedText = [a.text, b.text].sort().join(" + ");
+        return new Chunk(a.total + b.total, `(${sortedText})`);
+      }
+  
+      function subtract(a, b) {
+        return new Chunk(a.total - b.total, `(${a.text} - ${b.text})`);
+      }
+  
+      function multiply(a, b) {
+        // Mengurutkan teks agar tidak ada duplikasi
+        const sortedText = [a.text, b.text].sort().join(" * ");
+        return new Chunk(a.total * b.total, `(${sortedText})`);
+      }
+  
+      function divide(a, b) {
+        if (b.total === 0) return null; // Menghindari pembagian dengan 0
+        return new Chunk(a.total / b.total, `(${a.text} / ${b.text})`);
+      }
+  
+      const operations = [add, subtract, multiply, divide];
+  
+      // Fungsi rekursif untuk mencoba semua kombinasi operasi dan angka
+      function operate(chunks, target) {
+        // Jika hanya ada satu chunk, periksa apakah sudah mencapai target
+        if (chunks.length === 1) {
+          if (Math.abs(chunks[0].total - target) < 0.000001) {
+            return new Set([chunks[0].text]); // Return solusi dalam Set
+          }
+          return new Set();
+        }
+  
+        let solutions = new Set();
+        for (let i = 0; i < chunks.length; i++) {
+          for (let j = 0; j < chunks.length; j++) {
+            if (i !== j) {
+              // Buat chunk yang tersisa setelah mengambil dua angka
+              const remainingChunks = chunks.filter((_, idx) => idx !== i && idx !== j);
+              for (let operation of operations) {
+                const result = operation(chunks[i], chunks[j]);
+                if (result) {
+                  // Lakukan operasi rekursif dengan hasil operasi
+                  const subSolutions = operate([result, ...remainingChunks], target);
+                  subSolutions.forEach(solution => solutions.add(solution));
+                }
+              }
+            }
+          }
+        }
+        return solutions;
+      }
+  
+      // Fungsi utama untuk menyelesaikan permainan dan mencari solusi
+      function solve20(numbers) {
+        const chunks = numbers.map(num => new Chunk(num));
+        return operate(chunks, 20);
+      }
+  
+      // Event listener untuk menangani form submit
+      document.getElementById("puzzleForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+  
+        // Ambil angka dari form
+        const number1 = parseFloat(document.getElementById("number1").value);
+        const number2 = parseFloat(document.getElementById("number2").value);
+        const number3 = parseFloat(document.getElementById("number3").value);
+        const number4 = parseFloat(document.getElementById("number4").value);
+  
+        // Buat array angka
+        const numbers = [number1, number2, number3, number4];
+  
+        // Panggil fungsi solve20 untuk mencari solusi
+        const solutions = solve20(numbers);
+        const resultDiv = document.getElementById("result");
+  
+        // Tampilkan solusi di halaman
+        if (solutions.size > 0) {
+          const solutionCount = solutions.size;
+          const solutionText = Array.from(solutions).join('<br>');
+          resultDiv.innerHTML = `<p>Found ${solutionCount} solution${solutionCount > 1 ? 's' : ''}:</p>${solutionText}`;
+        } else {
+          resultDiv.innerHTML = "No solution found";
+        }
+      });
+    </script>
+  </body>
+  </html> 
