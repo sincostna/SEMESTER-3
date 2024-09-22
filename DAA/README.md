@@ -9,7 +9,7 @@ Program **20 Game Solver** adalah sebuah program yang bertujuan untuk mencari se
 3. Tekan tombol **"Cari Solusi"** untuk mendapatkan solusinya.
 
 ## Tautan
-- WEBSITE : https://20-gamesolver-mutvia.vercel.app/
+- Website : https://20-gamesolver-mutvia.vercel.app/
 - YouTube : https://youtu.be/UaJrsXmIRxs (Penjelasan kode)
 
 ## Author
