@@ -14,6 +14,7 @@ Program ini mengambil pendekatan berbasis metode greedy, yang berarti program ak
 
 
 ## Tautan
+- YouTube (Pembahasan kode) = https://www.youtube.com/watch?v=uyKoZ1DhXR8&feature=youtu.be
 
 ## Author
 | No |     Nama                |     NIM    |
