@@ -8,6 +8,7 @@ Program ini mengambil pendekatan berbasis metode greedy, yang berarti program ak
 
 ## Cara menggunakan kode
 1. 
+2. 
 
 
 ## Tautan
